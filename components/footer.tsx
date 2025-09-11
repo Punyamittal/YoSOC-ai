@@ -4,6 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import Plasma from "@/components/Plasma"
 import { Github, Twitter, Linkedin, Mail, Heart, ArrowUp } from "lucide-react"
 import { motion } from "framer-motion"
 
@@ -47,8 +48,23 @@ export function Footer() {
   ]
 
   return (
-    <footer className="bg-muted/30 border-t border-border/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="bg-muted/30 border-t border-border/50 relative overflow-hidden">
+      {/* Plasma Background */}
+      <div className="absolute inset-0 opacity-30 dark:opacity-20">
+        <Plasma 
+          color="#4d3dff"
+          speed={0.4}
+          direction="forward"
+          scale={1.2}
+          opacity={0.6}
+          mouseInteractive={false}
+        />
+      </div>
+      
+      {/* Light mode contrast overlay */}
+      <div className="absolute inset-0 bg-white/5 dark:bg-transparent" />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Main Footer Content */}
         <div className="py-16">
           <div className="grid lg:grid-cols-5 gap-8">

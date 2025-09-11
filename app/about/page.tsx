@@ -5,7 +5,6 @@ import { Footer } from "@/components/footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import PrismaticBurst from "@/components/PrismaticBurst"
 import Plasma from "@/components/Plasma"
 import Link from "next/link"
 import { motion } from "framer-motion"
@@ -84,19 +83,15 @@ export default function AboutPage() {
 
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden min-h-[80vh] flex items-center">
-        {/* PrismaticBurst Background */}
+        {/* Plasma Background */}
         <div className="absolute inset-0 opacity-60 dark:opacity-40">
-          <PrismaticBurst
-            animationType="rotate3d"
-            intensity={3.5}
-            speed={0.3}
-            distort={0.8}
-            paused={false}
-            offset={{ x: 0, y: 0 }}
-            hoverDampness={0.3}
-            rayCount={16}
-            mixBlendMode="lighten"
-            colors={['#ff007a', '#4d3dff', '#00d4ff', '#ffffff']}
+          <Plasma 
+            color="#ff007a"
+            speed={0.8}
+            direction="forward"
+            scale={1.1}
+            opacity={0.9}
+            mouseInteractive={true}
           />
         </div>
         

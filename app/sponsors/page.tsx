@@ -5,6 +5,7 @@ import { Footer } from "@/components/footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import DarkVeil from "@/components/DarkVeil"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Crown, Star, Heart, ArrowRight, Mail, ExternalLink, Gift, Users, Zap } from "lucide-react"
@@ -154,9 +155,16 @@ export default function SponsorsPage() {
       <Navigation />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5" />
-        <div className="max-w-7xl mx-auto relative">
+      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden min-h-[80vh] flex items-center">
+        {/* DarkVeil Background */}
+        <div className="absolute inset-0 opacity-60 dark:opacity-40">
+          <DarkVeil />
+        </div>
+        
+        {/* Light mode contrast overlay */}
+        <div className="absolute inset-0 bg-white/10 dark:bg-transparent" />
+        
+        <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
@@ -196,89 +204,6 @@ export default function SponsorsPage() {
         </div>
       </section>
 
-      {/* Sponsor Tiers */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl md:text-5xl font-bold gradient-text mb-6">Our Amazing Sponsors</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Thank you to these incredible organizations supporting youth in open source
-            </p>
-          </motion.div>
-
-          <div className="space-y-16">
-            {sponsorTiers.map((tier, tierIndex) => (
-              <motion.div
-                key={tier.tier}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: tierIndex * 0.2 }}
-                viewport={{ once: true }}
-              >
-                <div className="text-center mb-8">
-                  <div className="flex items-center justify-center gap-3 mb-4">
-                    <div className={`w-12 h-12 rounded-lg ${tier.color} flex items-center justify-center neon-glow`}>
-                      <tier.icon className="w-6 h-6 text-white" />
-                    </div>
-                    <h3 className={`text-2xl font-bold ${tier.textColor}`}>{tier.tier} Sponsors</h3>
-                  </div>
-                  <div className="flex flex-wrap justify-center gap-2 mb-6">
-                    {tier.benefits.map((benefit) => (
-                      <Badge key={benefit} variant="outline" className="text-xs">
-                        {benefit}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-
-                <div
-                  className={`grid ${tier.sponsors.length <= 2 ? "md:grid-cols-2" : "md:grid-cols-3"} gap-8 max-w-5xl mx-auto`}
-                >
-                  {tier.sponsors.map((sponsor, index) => (
-                    <motion.div
-                      key={sponsor.name}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      viewport={{ once: true }}
-                      whileHover={{ y: -5 }}
-                      className="group"
-                    >
-                      <Card className="h-full hover:shadow-xl transition-all duration-300 border-border/50 hover:border-primary/30">
-                        <CardContent className="p-8 text-center">
-                          <div className="mb-6 relative overflow-hidden rounded-lg bg-muted/50 p-6 group-hover:bg-muted/70 transition-colors">
-                            <img
-                              src={sponsor.logo || "/placeholder.svg"}
-                              alt={`${sponsor.name} logo`}
-                              className="w-full h-16 object-contain group-hover:scale-110 transition-transform duration-300"
-                            />
-                          </div>
-                          <h4 className="text-xl font-bold text-foreground mb-2">{sponsor.name}</h4>
-                          <p className="text-sm text-muted-foreground mb-4">{sponsor.description}</p>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="group-hover:border-primary group-hover:text-primary transition-colors bg-transparent"
-                          >
-                            <ExternalLink className="w-4 h-4 mr-2" />
-                            Visit Website
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Sponsorship Packages */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
@@ -332,8 +257,64 @@ export default function SponsorsPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Community Partners */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl md:text-5xl font-bold gradient-text mb-6">Community Partners</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              We're proud to work with these amazing organizations that share our mission of empowering youth in technology
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 max-w-4xl mx-auto">
+            {[
+              { name: "Tech Horizon Club", logo: "/placeholder-logo.png" },
+              { name: "TechHelp4U", logo: "/placeholder-logo.png" },
+              { name: "Lenient Tree", logo: "/placeholder-logo.png" },
+              { name: "DevNovate", logo: "/placeholder-logo.png" },
+              { name: "Hack with India", logo: "/placeholder-logo.png" },
+            ].map((partner, index) => (
+              <motion.div
+                key={partner.name}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.1, y: -5 }}
+                className="group"
+              >
+                <Card className="h-32 flex flex-col items-center justify-center hover:shadow-2xl transition-all duration-300 border-2 border-primary/20 hover:border-primary/60 bg-gradient-to-br from-background/80 to-background/60 backdrop-blur-md hover:bg-gradient-to-br hover:from-primary/5 hover:to-secondary/5 group-hover:scale-105 group-hover:-translate-y-2">
+                  <CardContent className="p-6 text-center">
+                    <div className="mb-3 relative">
+                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center group-hover:from-primary/20 group-hover:to-secondary/20 transition-all duration-300">
+                        <img
+                          src={partner.logo}
+                          alt={`${partner.name} logo`}
+                          className="w-10 h-10 object-contain group-hover:scale-110 transition-transform duration-300"
+                        />
+                      </div>
+                      <div className="absolute -top-1 -right-1 w-4 h-4 bg-primary/20 rounded-full group-hover:bg-primary/40 transition-colors duration-300"></div>
+                    </div>
+                    <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
+                      {partner.name}
+                    </h3>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary/10 via-secondary/5 to-primary/10">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
