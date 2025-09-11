@@ -5,6 +5,8 @@ import { Footer } from "@/components/footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import PrismaticBurst from "@/components/PrismaticBurst"
+import Plasma from "@/components/Plasma"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Target, Eye, Users, Code, Palette, GraduationCap, Crown, ArrowRight, Globe, Heart, Zap } from "lucide-react"
@@ -81,9 +83,27 @@ export default function AboutPage() {
       <Navigation />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5" />
-        <div className="max-w-7xl mx-auto relative">
+      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden min-h-[80vh] flex items-center">
+        {/* PrismaticBurst Background */}
+        <div className="absolute inset-0 opacity-60 dark:opacity-40">
+          <PrismaticBurst
+            animationType="rotate3d"
+            intensity={3.5}
+            speed={0.3}
+            distort={0.8}
+            paused={false}
+            offset={{ x: 0, y: 0 }}
+            hoverDampness={0.3}
+            rayCount={16}
+            mixBlendMode="lighten"
+            colors={['#ff007a', '#4d3dff', '#00d4ff', '#ffffff']}
+          />
+        </div>
+        
+        {/* Light mode contrast overlay */}
+        <div className="absolute inset-0 bg-white/10 dark:bg-transparent" />
+        
+        <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
@@ -152,8 +172,23 @@ export default function AboutPage() {
       </section>
 
       {/* Values */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        {/* Plasma Background */}
+        <div className="absolute inset-0 opacity-40 dark:opacity-30">
+          <Plasma 
+            color="#800080"
+            speed={1.6}
+            direction="forward"
+            scale={1.1}
+            opacity={0.8}
+            mouseInteractive={true}
+          />
+        </div>
+        
+        {/* Light mode contrast overlay */}
+        <div className="absolute inset-0 bg-white/5 dark:bg-transparent" />
+        
+        <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
@@ -176,7 +211,7 @@ export default function AboutPage() {
                 transition={{ duration: 0.6, delay: index * 0.2 }}
                 viewport={{ once: true }}
               >
-                <Card className="h-full text-center hover:shadow-lg transition-shadow">
+                <Card className="h-full text-center hover:shadow-lg transition-shadow bg-background/80 backdrop-blur-sm">
                   <CardContent className="p-8">
                     <div className="w-16 h-16 rounded-full gradient-primary flex items-center justify-center mx-auto mb-6 neon-glow">
                       <value.icon className="w-8 h-8 text-white" />

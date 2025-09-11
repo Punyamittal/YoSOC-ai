@@ -421,7 +421,8 @@ const PixelBlast: React.FC<PixelBlastProps> = ({
         canvas,
         context: gl as WebGL2RenderingContext,
         antialias,
-        alpha: true
+        alpha: true,
+        powerPreference: "high-performance"
       });
       renderer.domElement.style.width = '100%';
       renderer.domElement.style.height = '100%';

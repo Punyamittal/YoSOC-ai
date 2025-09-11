@@ -5,13 +5,52 @@ import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import Prism from "@/components/Prism"
-import PixelBlast from "@/components/PixelBlast"
+import PerformanceOptimizer from "@/components/PerformanceOptimizer"
+// Lazy load heavy WebGL components for better performance
+const Prism = lazy(() => import("@/components/Prism"))
+const PixelBlast = lazy(() => import("@/components/PixelBlast"))
 import Link from "next/link"
-import { ArrowRight, Code, Users, Zap, Globe, Calendar, Trophy } from "lucide-react"
-import { motion } from "framer-motion"
+import { ArrowRight, Code, Users, Zap, Globe, Calendar, Trophy, ChevronUp } from "lucide-react"
+import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion"
+import { useEffect, useState, useCallback, useMemo, lazy, Suspense } from "react"
 
 export default function HomePage() {
+  const [showScrollTop, setShowScrollTop] = useState(false)
+  const { scrollYProgress } = useScroll()
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  })
+
+  // Performance optimization: use transform instead of changing width
+  const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"])
+
+  // Optimized scroll handler with throttling
+  const handleScroll = useCallback(() => {
+    setShowScrollTop(window.scrollY > 300)
+  }, [])
+
+  useEffect(() => {
+    let ticking = false
+    const throttledScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll()
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+    
+    window.addEventListener('scroll', throttledScroll, { passive: true })
+    return () => window.removeEventListener('scroll', throttledScroll)
+  }, [handleScroll])
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   const features = [
     {
       icon: Code,
@@ -51,8 +90,15 @@ export default function HomePage() {
   ]
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
+    <PerformanceOptimizer>
+      <div className="min-h-screen bg-background scroll-smooth">
+        {/* Optimized Scroll Progress Bar */}
+        <motion.div
+          className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-secondary z-50 origin-left gpu-accelerated"
+          style={{ scaleX }}
+        />
+        
+        <Navigation />
 
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden min-h-screen flex items-center">
@@ -89,17 +135,19 @@ export default function HomePage() {
         
         {/* Animated Prism Background */}
         <div className="absolute inset-0 opacity-90 dark:opacity-30">
-          <Prism
-            animationType="rotate"
-            timeScale={0.6}
-            height={3.5}
-            baseWidth={5.5}
-            scale={3.6}
-            hueShift={0}
-            colorFrequency={1}
-            noise={0.0}
-            glow={2.5}
-          />
+          <Suspense fallback={<div className="w-full h-full bg-gradient-to-br from-primary/5 to-secondary/5" />}>
+            <Prism
+              animationType="rotate"
+              timeScale={0.6}
+              height={3.5}
+              baseWidth={5.5}
+              scale={3.6}
+              hueShift={0}
+              colorFrequency={1}
+              noise={0.0}
+              glow={2.5}
+            />
+          </Suspense>
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10">
@@ -127,7 +175,7 @@ export default function HomePage() {
             </motion.div>
 
             <motion.h1
-              className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight"
+              className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight gpu-accelerated"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.3 }}
@@ -206,9 +254,15 @@ export default function HomePage() {
                   asChild
                   size="lg"
                   className="gradient-primary text-white hover:opacity-90 transition-all duration-300 neon-glow shadow-lg hover:shadow-xl"
+                  onClick={() => {
+                    const featuresSection = document.querySelector('#features')
+                    if (featuresSection) {
+                      featuresSection.scrollIntoView({ behavior: 'smooth' })
+                    }
+                  }}
                 >
                   <Link href="/recruit" className="flex items-center group">
-                    Join YoSOC <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    Join Y-SOC <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </Button>
               </motion.div>
@@ -222,6 +276,12 @@ export default function HomePage() {
                   variant="outline"
                   size="lg"
                   className="border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent transition-all duration-300 hover:shadow-lg"
+                  onClick={() => {
+                    const featuresSection = document.querySelector('#features')
+                    if (featuresSection) {
+                      featuresSection.scrollIntoView({ behavior: 'smooth' })
+                    }
+                  }}
                 >
                   <Link href="/about">Learn More</Link>
                 </Button>
@@ -276,30 +336,32 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30 relative overflow-hidden">
-        {/* Floating particles */}
+      <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30 relative overflow-hidden page-transition">
+        {/* Optimized floating particles */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(6)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-2 h-2 bg-primary/20 rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                y: [0, -30, 0],
-                opacity: [0.2, 0.8, 0.2],
-                scale: [1, 1.5, 1],
-              }}
-              transition={{
-                duration: 4 + Math.random() * 2,
-                repeat: Infinity,
-                delay: Math.random() * 2,
-                ease: "easeInOut",
-              }}
-            />
-          ))}
+          {useMemo(() => 
+            [...Array(6)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-2 h-2 bg-primary/20 rounded-full gpu-accelerated"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                }}
+                animate={{
+                  y: [0, -30, 0],
+                  opacity: [0.2, 0.8, 0.2],
+                  scale: [1, 1.5, 1],
+                }}
+                transition={{
+                  duration: 4 + Math.random() * 2,
+                  repeat: Infinity,
+                  delay: Math.random() * 2,
+                  ease: "easeInOut",
+                }}
+              />
+            )), [])
+          }
         </div>
         <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
@@ -357,7 +419,7 @@ export default function HomePage() {
       </section>
 
       {/* Roles Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <section id="roles" className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden page-transition">
         <div className="max-w-7xl mx-auto">
           <motion.div
             className="text-center mb-16"
@@ -417,31 +479,33 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary/10 via-secondary/5 to-primary/10 relative overflow-hidden">
+      <section id="cta" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary/10 via-secondary/5 to-primary/10 relative overflow-hidden page-transition">
         {/* Light mode contrast overlay */}
         <div className="absolute inset-0 bg-white/5 dark:bg-transparent" />
         
         {/* PixelBlast Interactive Background */}
         <div className="absolute inset-0 opacity-60 dark:opacity-40">
-          <PixelBlast
-            variant="circle"
-            pixelSize={6}
-            color="#B19EEF"
-            patternScale={3}
-            patternDensity={1.2}
-            pixelSizeJitter={0.5}
-            enableRipples
-            rippleSpeed={0.4}
-            rippleThickness={0.12}
-            rippleIntensityScale={1.5}
-            liquid
-            liquidStrength={0.12}
-            liquidRadius={1.2}
-            liquidWobbleSpeed={5}
-            speed={0.6}
-            edgeFade={0.25}
-            transparent
-          />
+          <Suspense fallback={<div className="w-full h-full bg-gradient-to-r from-primary/10 to-secondary/10" />}>
+            <PixelBlast
+              variant="circle"
+              pixelSize={6}
+              color="#B19EEF"
+              patternScale={3}
+              patternDensity={1.2}
+              pixelSizeJitter={0.5}
+              enableRipples
+              rippleSpeed={0.4}
+              rippleThickness={0.12}
+              rippleIntensityScale={1.5}
+              liquid
+              liquidStrength={0.12}
+              liquidRadius={1.2}
+              liquidWobbleSpeed={5}
+              speed={0.6}
+              edgeFade={0.25}
+              transparent
+            />
+          </Suspense>
         </div>
         
        
@@ -522,6 +586,27 @@ export default function HomePage() {
 
       {/* Footer Section */}
       <Footer />
-    </div>
+
+      {/* Smooth Scroll to Top Button */}
+      <motion.button
+        onClick={scrollToTop}
+        className="fixed bottom-8 right-8 z-50 p-3 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300"
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ 
+          opacity: showScrollTop ? 1 : 0,
+          scale: showScrollTop ? 1 : 0
+        }}
+        whileHover={{ 
+          scale: 1.1,
+          y: -2
+        }}
+        whileTap={{ scale: 0.95 }}
+        transition={{ duration: 0.2 }}
+        aria-label="Scroll to top"
+      >
+        <ChevronUp className="h-5 w-5" />
+      </motion.button>
+      </div>
+    </PerformanceOptimizer>
   )
 }

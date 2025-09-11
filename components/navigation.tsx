@@ -29,6 +29,7 @@ export function Navigation() {
     { href: "/contact", label: "Contact" },
   ]
 
+
   return (
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
@@ -86,14 +87,29 @@ export function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <Link
+              <motion.div
                 key={item.href}
-                href={item.href}
-                className="text-foreground hover:text-primary transition-colors duration-200 font-medium relative group"
+                whileHover={{ y: -1 }}
+                whileTap={{ scale: 0.98 }}
               >
-                {item.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
-              </Link>
+                <Link
+                  href={item.href}
+                  className="text-foreground hover:text-primary transition-colors duration-200 font-medium relative group"
+                  onClick={(e) => {
+                    if (item.href === "/") {
+                      // If we're already on the home page, just scroll to top
+                      if (window.location.pathname === "/") {
+                        e.preventDefault()
+                        window.scrollTo({ top: 0, behavior: 'smooth' })
+                      }
+                      // If we're on a different page, let the link navigate normally
+                    }
+                  }}
+                >
+                  {item.label}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
+                </Link>
+              </motion.div>
             ))}
           </div>
 
@@ -137,7 +153,17 @@ export function Navigation() {
                     <Link
                       href={item.href}
                       className="block px-3 py-2 text-foreground hover:text-primary transition-colors duration-200 font-medium"
-                      onClick={() => setIsOpen(false)}
+                      onClick={(e) => {
+                        setIsOpen(false)
+                        if (item.href === "/") {
+                          // If we're already on the home page, just scroll to top
+                          if (window.location.pathname === "/") {
+                            e.preventDefault()
+                            window.scrollTo({ top: 0, behavior: 'smooth' })
+                          }
+                          // If we're on a different page, let the link navigate normally
+                        }
+                      }}
                     >
                       {item.label}
                     </Link>

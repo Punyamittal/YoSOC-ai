@@ -65,7 +65,8 @@ const Prism: React.FC<PrismProps> = ({
     const renderer = new Renderer({
       dpr,
       alpha: transparent,
-      antialias: false
+      antialias: false,
+      powerPreference: "high-performance"
     });
     const gl = renderer.gl;
     gl.disable(gl.DEPTH_TEST);
@@ -347,52 +348,61 @@ const Prism: React.FC<PrismProps> = ({
       program.uniforms.uUseBaseWobble.value = 1;
     }
 
+    let lastTime = 0;
+    const targetFPS = 60;
+    const frameInterval = 1000 / targetFPS;
+
     const render = (t: number) => {
-      const time = (t - t0) * 0.001;
-      program.uniforms.iTime.value = time;
-
+      const deltaTime = t - lastTime;
       let continueRAF = true;
+      
+      if (deltaTime >= frameInterval) {
+        const time = (t - t0) * 0.001;
+        program.uniforms.iTime.value = time;
 
-      if (animationType === 'hover') {
-        const maxPitch = 0.6 * HOVSTR;
-        const maxYaw = 0.6 * HOVSTR;
-        targetYaw = (pointer.inside ? -pointer.x : 0) * maxYaw;
-        targetPitch = (pointer.inside ? pointer.y : 0) * maxPitch;
-        const prevYaw = yaw;
-        const prevPitch = pitch;
-        const prevRoll = roll;
-        yaw = lerp(prevYaw, targetYaw, INERT);
-        pitch = lerp(prevPitch, targetPitch, INERT);
-        roll = lerp(prevRoll, 0, 0.1);
-        program.uniforms.uRot.value = setMat3FromEuler(yaw, pitch, roll, rotBuf);
+        if (animationType === 'hover') {
+          const maxPitch = 0.6 * HOVSTR;
+          const maxYaw = 0.6 * HOVSTR;
+          targetYaw = (pointer.inside ? -pointer.x : 0) * maxYaw;
+          targetPitch = (pointer.inside ? pointer.y : 0) * maxPitch;
+          const prevYaw = yaw;
+          const prevPitch = pitch;
+          const prevRoll = roll;
+          yaw = lerp(prevYaw, targetYaw, INERT);
+          pitch = lerp(prevPitch, targetPitch, INERT);
+          roll = lerp(prevRoll, 0, 0.1);
+          program.uniforms.uRot.value = setMat3FromEuler(yaw, pitch, roll, rotBuf);
 
-        if (NOISE_IS_ZERO) {
-          const settled =
-            Math.abs(yaw - targetYaw) < 1e-4 && Math.abs(pitch - targetPitch) < 1e-4 && Math.abs(roll) < 1e-4;
-          if (settled) continueRAF = false;
+          if (NOISE_IS_ZERO) {
+            const settled =
+              Math.abs(yaw - targetYaw) < 1e-4 && Math.abs(pitch - targetPitch) < 1e-4 && Math.abs(roll) < 1e-4;
+            if (settled) continueRAF = false;
+          }
+        } else if (animationType === '3drotate') {
+          const tScaled = time * TS;
+          yaw = tScaled * wY;
+          pitch = Math.sin(tScaled * wX + phX) * 0.6;
+          roll = Math.sin(tScaled * wZ + phZ) * 0.5;
+          program.uniforms.uRot.value = setMat3FromEuler(yaw, pitch, roll, rotBuf);
+          if (TS < 1e-6) continueRAF = false;
+        } else {
+          rotBuf[0] = 1;
+          rotBuf[1] = 0;
+          rotBuf[2] = 0;
+          rotBuf[3] = 0;
+          rotBuf[4] = 1;
+          rotBuf[5] = 0;
+          rotBuf[6] = 0;
+          rotBuf[7] = 0;
+          rotBuf[8] = 1;
+          program.uniforms.uRot.value = rotBuf;
+          if (TS < 1e-6) continueRAF = false;
         }
-      } else if (animationType === '3drotate') {
-        const tScaled = time * TS;
-        yaw = tScaled * wY;
-        pitch = Math.sin(tScaled * wX + phX) * 0.6;
-        roll = Math.sin(tScaled * wZ + phZ) * 0.5;
-        program.uniforms.uRot.value = setMat3FromEuler(yaw, pitch, roll, rotBuf);
-        if (TS < 1e-6) continueRAF = false;
-      } else {
-        rotBuf[0] = 1;
-        rotBuf[1] = 0;
-        rotBuf[2] = 0;
-        rotBuf[3] = 0;
-        rotBuf[4] = 1;
-        rotBuf[5] = 0;
-        rotBuf[6] = 0;
-        rotBuf[7] = 0;
-        rotBuf[8] = 1;
-        program.uniforms.uRot.value = rotBuf;
-        if (TS < 1e-6) continueRAF = false;
-      }
 
-      renderer.render({ scene: mesh });
+        renderer.render({ scene: mesh });
+        lastTime = t;
+      }
+      
       if (continueRAF) {
         raf = requestAnimationFrame(render);
       } else {
