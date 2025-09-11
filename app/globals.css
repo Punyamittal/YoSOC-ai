@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Updated to YoSOC purple-blue neon theme */
+  /* Updated to Y-SoC purple-blue neon theme */
   --background: oklch(0.98 0.01 270);
   --foreground: oklch(0.15 0.02 270);
   --card: oklch(0.98 0.01 270);

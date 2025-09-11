@@ -168,7 +168,7 @@ export default function SponsorsPage() {
             </Badge>
             <h1 className="text-4xl md:text-6xl font-bold gradient-text mb-6">Powered by Innovation</h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              YoSOC is made possible by forward-thinking companies and organizations who believe in empowering the next
+              Y-SoC is made possible by forward-thinking companies and organizations who believe in empowering the next
               generation of developers.
             </p>
           </motion.div>
@@ -362,7 +362,7 @@ export default function SponsorsPage() {
                 size="lg"
                 className="border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent"
               >
-                <Link href="mailto:sponsors@yosoc.dev" className="flex items-center">
+                <Link href="mailto:sponsors@Y-SoC.dev" className="flex items-center">
                   <Mail className="mr-2 h-5 w-5" />
                   Contact Us
                 </Link>

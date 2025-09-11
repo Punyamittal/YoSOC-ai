@@ -124,7 +124,7 @@ export default function TimelinePage() {
             </Badge>
             <h1 className="text-4xl md:text-6xl font-bold gradient-text mb-6">Your 6-Month Journey</h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              From registration to showcase, follow the complete YoSOC timeline and see how you'll grow as a developer
+              From registration to showcase, follow the complete Y-SoC timeline and see how you'll grow as a developer
               and contributor to the open-source community.
             </p>
           </motion.div>
@@ -264,7 +264,7 @@ export default function TimelinePage() {
                 size="lg"
                 className="border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent"
               >
-                <Link href="/about">Learn More About YoSOC</Link>
+                <Link href="/about">Learn More About Y-SoC</Link>
               </Button>
             </div>
           </motion.div>

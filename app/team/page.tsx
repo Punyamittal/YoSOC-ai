@@ -133,7 +133,7 @@ export default function TeamPage() {
             <Badge variant="secondary" className="mb-4 px-4 py-2">
               Meet Our Team
             </Badge>
-            <h1 className="text-4xl md:text-6xl font-bold gradient-text mb-6">The People Behind YoSOC</h1>
+            <h1 className="text-4xl md:text-6xl font-bold gradient-text mb-6">The People Behind Y-SoC</h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Our diverse team of organizers, mentors, and contributors from around the world are united by a shared
               passion for open source and youth empowerment.
@@ -154,7 +154,7 @@ export default function TeamPage() {
           >
             <h2 className="text-3xl md:text-5xl font-bold gradient-text mb-6">Core Team</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              The dedicated organizers who make YoSOC possible
+              The dedicated organizers who make Y-SoC possible
             </p>
           </motion.div>
 
@@ -292,7 +292,7 @@ export default function TeamPage() {
           >
             <h2 className="text-3xl md:text-5xl font-bold gradient-text mb-6">Want to Join Our Team?</h2>
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              We're always looking for passionate individuals to help grow the YoSOC community. Whether as a mentor,
+              We're always looking for passionate individuals to help grow the Y-SoC community. Whether as a mentor,
               organizer, or contributor, there's a place for you.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

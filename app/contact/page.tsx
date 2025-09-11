@@ -41,7 +41,7 @@ export default function ContactPage() {
       icon: Mail,
       title: "Email Us",
       description: "Get in touch via email",
-      contact: "hello@yosoc.dev",
+      contact: "hello@Y-SoC.dev",
       action: "Send Email",
     },
     {
@@ -126,7 +126,7 @@ export default function ContactPage() {
             <Badge variant="secondary" className="mb-4 px-4 py-2">
               Get In Touch
             </Badge>
-            <h1 className="text-4xl md:text-6xl font-bold gradient-text mb-6">Contact YoSOC</h1>
+            <h1 className="text-4xl md:text-6xl font-bold gradient-text mb-6">Contact Y-SoC</h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Have questions, ideas, or want to get involved? We'd love to hear from you. Reach out to our team or join
               our vibrant Discord community.
@@ -282,7 +282,7 @@ export default function ContactPage() {
                   </div>
                   <p className="text-muted-foreground mb-6 leading-relaxed">
                     Get real-time support, connect with other developers, participate in discussions, and stay updated
-                    with the latest YoSOC news and events.
+                    with the latest Y-SoC news and events.
                   </p>
                   <div className="grid grid-cols-2 gap-4 mb-6">
                     <div className="text-center">

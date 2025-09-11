@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Github, Twitter, Linkedin, Mail, Heart, ArrowUp } from "lucide-react"
@@ -13,7 +14,7 @@ export function Footer() {
 
   const footerLinks = {
     program: [
-      { label: "About YoSOC", href: "/about" },
+      { label: "About Y-SoC", href: "/about" },
       { label: "Timeline", href: "/timeline" },
       { label: "Join Program", href: "/recruit" },
       { label: "FAQ", href: "#" },
@@ -60,17 +61,55 @@ export function Footer() {
                 viewport={{ once: true }}
               >
                 <Link href="/" className="flex items-center space-x-2 mb-6">
-                  <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center neon-glow">
-                    <span className="text-white font-bold text-xl">Y</span>
-                  </div>
-                  <span className="font-bold text-2xl gradient-text">YoSOC</span>
+                  <motion.div
+                    className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 border border-primary/30 flex items-center justify-center backdrop-blur-sm"
+                    whileHover={{ 
+                      scale: 1.1,
+                      rotate: [0, -5, 5, 0],
+                      transition: { duration: 0.3 }
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                    animate={{
+                      boxShadow: [
+                        "0 0 0 0 rgba(59, 130, 246, 0.4)",
+                        "0 0 0 4px rgba(59, 130, 246, 0.1)",
+                        "0 0 0 0 rgba(59, 130, 246, 0.4)"
+                      ]
+                    }}
+                    transition={{
+                      boxShadow: {
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }
+                    }}
+                  >
+                    <motion.span 
+                      className="text-2xl font-mono font-bold text-primary"
+                      animate={{
+                        textShadow: [
+                          "0 0 0px rgba(59, 130, 246, 0.5)",
+                          "0 0 8px rgba(59, 130, 246, 0.8)",
+                          "0 0 0px rgba(59, 130, 246, 0.5)"
+                        ]
+                      }}
+                      transition={{
+                        duration: 1.5,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    >
+                      &lt;/&gt;
+                    </motion.span>
+                  </motion.div>
+                  <span className="font-bold text-2xl gradient-text">Y-SoC</span>
                 </Link>
                 <p className="text-muted-foreground mb-6 leading-relaxed max-w-md">
                   Empowering the next generation of developers through open-source collaboration. Join thousands of
                   young developers building the future together.
                 </p>
                 <Badge variant="secondary" className="mb-6">
-                  October 2024 - March 2025
+                  October 2025 - March 2026
                 </Badge>
                 <div className="flex space-x-4">
                   {socialLinks.map((social) => (
@@ -191,7 +230,7 @@ export function Footer() {
             >
               <span>Made with</span>
               <Heart className="w-4 h-4 mx-1 text-red-500" />
-              <span>by the YoSOC community</span>
+              <span>by the Y-SoC community</span>
             </motion.div>
 
             <motion.div
@@ -201,7 +240,7 @@ export function Footer() {
               viewport={{ once: true }}
               className="flex items-center gap-6"
             >
-              <p className="text-sm text-muted-foreground">© 2024 YoSOC. All rights reserved.</p>
+              <p className="text-sm text-muted-foreground">© 2024 Y-SoC. All rights reserved.</p>
               <Button
                 variant="ghost"
                 size="icon"

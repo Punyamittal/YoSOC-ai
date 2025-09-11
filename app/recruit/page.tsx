@@ -107,7 +107,7 @@ export default function RecruitPage() {
               </div>
               <h1 className="text-4xl font-bold gradient-text mb-6">Application Submitted!</h1>
               <p className="text-xl text-muted-foreground mb-8">
-                Thank you for applying to YoSOC! We'll review your application and get back to you within 5-7 business
+                Thank you for applying to Y-SoC! We'll review your application and get back to you within 5-7 business
                 days.
               </p>
               <div className="space-y-4">
@@ -141,7 +141,7 @@ export default function RecruitPage() {
             transition={{ duration: 0.8 }}
           >
             <Badge variant="secondary" className="mb-4 px-4 py-2">
-              Join YoSOC
+              Join Y-SoC
             </Badge>
             <h1 className="text-4xl md:text-6xl font-bold gradient-text mb-6">Start Your Journey</h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -302,7 +302,7 @@ export default function RecruitPage() {
 
                   {/* Motivation */}
                   <div className="space-y-2">
-                    <Label htmlFor="motivation">Why do you want to join YoSOC? *</Label>
+                    <Label htmlFor="motivation">Why do you want to join Y-SoC? *</Label>
                     <Textarea
                       id="motivation"
                       placeholder="Tell us about your motivation, goals, and what you hope to achieve..."
@@ -384,7 +384,7 @@ export default function RecruitPage() {
                         onCheckedChange={(checked) => handleInputChange("agreeNewsletter", checked as boolean)}
                       />
                       <Label htmlFor="agreeNewsletter" className="text-sm">
-                        I'd like to receive updates about YoSOC and the open-source community
+                        I'd like to receive updates about Y-SoC and the open-source community
                       </Label>
                     </div>
                   </div>

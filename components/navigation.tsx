@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Menu, X } from "lucide-react"
@@ -39,13 +40,47 @@ export function Navigation() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <motion.div
-              className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center"
-              whileHover={{ scale: 1.1 }}
+              className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 border border-primary/30 flex items-center justify-center backdrop-blur-sm"
+              whileHover={{ 
+                scale: 1.1,
+                rotate: [0, -5, 5, 0],
+                transition: { duration: 0.3 }
+              }}
               whileTap={{ scale: 0.95 }}
+              animate={{
+                boxShadow: [
+                  "0 0 0 0 rgba(59, 130, 246, 0.4)",
+                  "0 0 0 4px rgba(59, 130, 246, 0.1)",
+                  "0 0 0 0 rgba(59, 130, 246, 0.4)"
+                ]
+              }}
+              transition={{
+                boxShadow: {
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }
+              }}
             >
-              <span className="text-white font-bold text-lg">Y</span>
+              <motion.span 
+                className="text-xl font-mono font-bold text-primary"
+                animate={{
+                  textShadow: [
+                    "0 0 0px rgba(59, 130, 246, 0.5)",
+                    "0 0 8px rgba(59, 130, 246, 0.8)",
+                    "0 0 0px rgba(59, 130, 246, 0.5)"
+                  ]
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                &lt;/&gt;
+              </motion.span>
             </motion.div>
-            <span className="font-bold text-xl gradient-text">YoSOC</span>
+            <span className="font-bold text-xl gradient-text">Y-SoC</span>
           </Link>
 
           {/* Desktop Navigation */}

@@ -91,11 +91,11 @@ export default function AboutPage() {
             transition={{ duration: 0.8 }}
           >
             <Badge variant="secondary" className="mb-4 px-4 py-2">
-              About YoSOC
+              About Y-SoC
             </Badge>
             <h1 className="text-4xl md:text-6xl font-bold gradient-text mb-6">Empowering Youth Through Open Source</h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              YoSOC is more than a program—it's a movement that connects passionate young developers worldwide to
+              Y-SoC is more than a program—it's a movement that connects passionate young developers worldwide to
               create, collaborate, and contribute to meaningful open-source projects.
             </p>
           </motion.div>
@@ -163,7 +163,7 @@ export default function AboutPage() {
           >
             <h2 className="text-3xl md:text-5xl font-bold gradient-text mb-6">Our Values</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              The principles that guide everything we do in the YoSOC community
+              The principles that guide everything we do in the Y-SoC community
             </p>
           </motion.div>
 
@@ -260,7 +260,7 @@ export default function AboutPage() {
           >
             <h2 className="text-3xl md:text-5xl font-bold gradient-text mb-6">Ready to Join Our Community?</h2>
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Whether you're a seasoned developer or just starting out, there's a place for you in YoSOC. Let's build
+              Whether you're a seasoned developer or just starting out, there's a place for you in Y-SoC. Let's build
               the future of open source together.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -8,9 +8,14 @@ import { Suspense } from "react"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "YoSOC - Youth Season of Code",
+  title: "Y-SoC - Youth Season of Code",
   description: "You Code, You Create, You Collaborate - Join the global youth open-source community",
   generator: "v0.app",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 }
 
 export default function RootLayout({
