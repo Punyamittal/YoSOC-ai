@@ -57,20 +57,24 @@ export function PillNavigation() {
       {/* Main Navigation Container */}
       <div className="relative">
         <motion.div
-          className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-2xl px-8 py-4 shadow-xl"
+          className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-2xl px-8 py-4 shadow-xl ultra-smooth"
           animate={{
             boxShadow: scrolled 
               ? "0 8px 32px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.05)"
               : "0 20px 40px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.05)"
           }}
-          transition={{ duration: 0.3 }}
+          transition={{ 
+            duration: 0.4,
+            ease: [0.4, 0, 0.2, 1]
+          }}
         >
           <div className="flex items-center justify-between max-w-6xl mx-auto">
             {/* Logo - Left Aligned, Smaller */}
             <motion.div
-              className="flex items-center space-x-3"
+              className="flex items-center space-x-3 smooth-scale"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
             >
               <Link href="/" onClick={() => handleLinkClick("/")}>
                 <motion.div

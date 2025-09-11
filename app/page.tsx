@@ -5,14 +5,31 @@ import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import PerformanceOptimizer from "@/components/PerformanceOptimizer"
-// Lazy load heavy WebGL components for better performance
-const Prism = lazy(() => import("@/components/Prism"))
-const PixelBlast = lazy(() => import("@/components/PixelBlast"))
+import { SmoothnessOptimizer } from "@/components/SmoothnessOptimizer"
+import { SmoothLoader } from "@/components/SmoothLoader"
+import { WebGLErrorBoundary } from "@/components/WebGLErrorBoundary"
 import Link from "next/link"
 import { ArrowRight, Code, Users, Zap, Globe, Calendar, Trophy, ChevronUp } from "lucide-react"
 import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion"
 import { useEffect, useState, useCallback, useMemo, lazy, Suspense } from "react"
+
+// Lazy load heavy WebGL components for better performance
+const Prism = lazy(() => import("@/components/Prism"))
+const PixelBlast = lazy(() => import("@/components/PixelBlast"))
+const PerformanceOptimizer = lazy(() => import("@/components/PerformanceOptimizer"))
+
+// WebGL component fallbacks
+const WebGLFallback = ({ children, height = "600px" }: { children: React.ReactNode; height?: string }) => (
+  <div 
+    className="w-full relative bg-gradient-to-br from-blue-500/5 to-purple-500/5 rounded-lg flex items-center justify-center"
+    style={{ height }}
+  >
+    <div className="text-center">
+      <SmoothLoader size="lg" />
+      <p className="text-muted-foreground text-sm mt-4">Loading interactive content...</p>
+    </div>
+  </div>
+)
 
 export default function HomePage() {
   const [showScrollTop, setShowScrollTop] = useState(false)
@@ -28,10 +45,13 @@ export default function HomePage() {
 
   // Optimized scroll handler with throttling
   const handleScroll = useCallback(() => {
+    if (typeof window === 'undefined') return
     setShowScrollTop(window.scrollY > 300)
   }, [])
 
   useEffect(() => {
+    if (typeof window === 'undefined') return
+    
     let ticking = false
     const throttledScroll = () => {
       if (!ticking) {
@@ -47,9 +67,10 @@ export default function HomePage() {
     return () => window.removeEventListener('scroll', throttledScroll)
   }, [handleScroll])
 
-  const scrollToTop = () => {
+  const scrollToTop = useCallback(() => {
+    if (typeof window === 'undefined') return
     window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+  }, [])
 
   const features = [
     {
@@ -90,12 +111,15 @@ export default function HomePage() {
   ]
 
   return (
-    <PerformanceOptimizer>
-      <div className="min-h-screen bg-background scroll-smooth">
-        {/* Optimized Scroll Progress Bar */}
+    <Suspense fallback={<div className="min-h-screen bg-background" />}>
+      <PerformanceOptimizer>
+        <SmoothnessOptimizer>
+          <div className="min-h-screen bg-background smooth-scroll-container">
+        {/* Ultra-Smooth Scroll Progress Bar */}
         <motion.div
           className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-secondary z-50 origin-left gpu-accelerated"
           style={{ scaleX }}
+          transition={{ duration: 0.1, ease: [0.4, 0, 0.2, 1] }}
         />
         
         <Navigation />
@@ -135,27 +159,33 @@ export default function HomePage() {
         
         {/* Animated Prism Background */}
         <div className="absolute inset-0 opacity-90 dark:opacity-30">
-          <Suspense fallback={<div className="w-full h-full bg-gradient-to-br from-primary/5 to-secondary/5" />}>
-            <Prism
-              animationType="rotate"
-              timeScale={0.6}
-              height={3.5}
-              baseWidth={5.5}
-              scale={3.6}
-              hueShift={0}
-              colorFrequency={1}
-              noise={0.0}
-              glow={2.5}
-            />
-          </Suspense>
+          <WebGLErrorBoundary>
+            <Suspense fallback={<WebGLFallback height="100%"><div /></WebGLFallback>}>
+              <Prism
+                animationType="rotate"
+                timeScale={0.6}
+                height={3.5}
+                baseWidth={5.5}
+                scale={3.6}
+                hueShift={0}
+                colorFrequency={1}
+                noise={0.0}
+                glow={2.5}
+              />
+            </Suspense>
+          </WebGLErrorBoundary>
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
-            className="text-center"
-            initial={{ opacity: 0, y: 20 }}
+            className="text-center smooth-fade-in"
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ 
+              duration: 1,
+              ease: [0.4, 0, 0.2, 1],
+              delay: 0.2
+            }}
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -485,27 +515,29 @@ export default function HomePage() {
         
         {/* PixelBlast Interactive Background */}
         <div className="absolute inset-0 opacity-60 dark:opacity-40">
-          <Suspense fallback={<div className="w-full h-full bg-gradient-to-r from-primary/10 to-secondary/10" />}>
-            <PixelBlast
-              variant="circle"
-              pixelSize={6}
-              color="#B19EEF"
-              patternScale={3}
-              patternDensity={1.2}
-              pixelSizeJitter={0.5}
-              enableRipples
-              rippleSpeed={0.4}
-              rippleThickness={0.12}
-              rippleIntensityScale={1.5}
-              liquid
-              liquidStrength={0.12}
-              liquidRadius={1.2}
-              liquidWobbleSpeed={5}
-              speed={0.6}
-              edgeFade={0.25}
-              transparent
-            />
-          </Suspense>
+          <WebGLErrorBoundary>
+            <Suspense fallback={<WebGLFallback height="100%"><div /></WebGLFallback>}>
+              <PixelBlast
+                variant="circle"
+                pixelSize={6}
+                color="#B19EEF"
+                patternScale={3}
+                patternDensity={1.2}
+                pixelSizeJitter={0.5}
+                enableRipples
+                rippleSpeed={0.4}
+                rippleThickness={0.12}
+                rippleIntensityScale={1.5}
+                liquid
+                liquidStrength={0.12}
+                liquidRadius={1.2}
+                liquidWobbleSpeed={5}
+                speed={0.6}
+                edgeFade={0.25}
+                transparent
+              />
+            </Suspense>
+          </WebGLErrorBoundary>
         </div>
         
        
@@ -590,23 +622,30 @@ export default function HomePage() {
       {/* Smooth Scroll to Top Button */}
       <motion.button
         onClick={scrollToTop}
-        className="fixed bottom-8 right-8 z-50 p-3 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300"
-        initial={{ opacity: 0, scale: 0 }}
+        className="fixed bottom-8 right-8 z-50 p-3 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 ultra-smooth"
+        initial={{ opacity: 0, scale: 0, y: 20 }}
         animate={{ 
           opacity: showScrollTop ? 1 : 0,
-          scale: showScrollTop ? 1 : 0
+          scale: showScrollTop ? 1 : 0,
+          y: showScrollTop ? 0 : 20
         }}
         whileHover={{ 
           scale: 1.1,
-          y: -2
+          y: -2,
+          boxShadow: "0 10px 25px rgba(59, 130, 246, 0.3)"
         }}
         whileTap={{ scale: 0.95 }}
-        transition={{ duration: 0.2 }}
+        transition={{ 
+          duration: 0.3,
+          ease: [0.4, 0, 0.2, 1]
+        }}
         aria-label="Scroll to top"
       >
         <ChevronUp className="h-5 w-5" />
       </motion.button>
-      </div>
-    </PerformanceOptimizer>
+          </div>
+        </SmoothnessOptimizer>
+      </PerformanceOptimizer>
+    </Suspense>
   )
 }
