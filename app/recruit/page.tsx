@@ -99,27 +99,42 @@ export default function RecruitPage() {
 
       console.log("Submitting to Flask backend:", submissionData)
 
-      // Send data to Flask backend
+      // Send data to Flask backend with better error handling
       const response = await fetch('http://localhost:5000/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(submissionData)
+        body: JSON.stringify(submissionData),
+        mode: 'cors' // Explicitly set CORS mode
       })
 
+      console.log("Response status:", response.status)
+      console.log("Response headers:", response.headers)
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
       const result = await response.json()
+      console.log("Response data:", result)
 
       if (result.status === 'success') {
         console.log("Application submitted successfully:", result)
         setIsSubmitted(true)
+        // Show success message
+        alert('Application submitted successfully! We will review your application and get back to you soon.')
       } else {
         console.error("Submission failed:", result.message)
         alert('Error: ' + result.message)
       }
     } catch (error) {
       console.error("Error submitting application:", error)
-      alert('Failed to submit application. Please try again.')
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        alert('Network error: Please check if the backend server is running on port 5000')
+      } else {
+        alert('Failed to submit application. Please try again. Error: ' + error.message)
+      }
     } finally {
       setIsSubmitting(false)
     }

@@ -5,14 +5,14 @@ import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import PerformanceOptimizer from "@/components/PerformanceOptimizer"
-// Lazy load heavy WebGL components for better performance
-const Prism = lazy(() => import("@/components/Prism"))
-const PixelBlast = lazy(() => import("@/components/PixelBlast"))
 import Link from "next/link"
 import { ArrowRight, Code, Users, Zap, Globe, Calendar, Trophy, ChevronUp } from "lucide-react"
 import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion"
 import { useEffect, useState, useCallback, useMemo, lazy, Suspense } from "react"
+
+// Lazy load heavy WebGL components for better performance
+const Prism = lazy(() => import("@/components/Prism"))
+const PixelBlast = lazy(() => import("@/components/PixelBlast"))
 
 export default function HomePage() {
   const [showScrollTop, setShowScrollTop] = useState(false)
@@ -90,8 +90,7 @@ export default function HomePage() {
   ]
 
   return (
-    <PerformanceOptimizer>
-      <div className="min-h-screen bg-background scroll-smooth">
+    <div className="min-h-screen bg-background scroll-smooth">
         {/* Optimized Scroll Progress Bar */}
         <motion.div
           className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-secondary z-50 origin-left gpu-accelerated"
@@ -607,6 +606,5 @@ export default function HomePage() {
         <ChevronUp className="h-5 w-5" />
       </motion.button>
       </div>
-    </PerformanceOptimizer>
   )
 }
